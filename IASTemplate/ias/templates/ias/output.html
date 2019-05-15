@@ -1,0 +1,93 @@
+{% extends 'ias/index.html' %}
+
+{% block content %}
+
+<h1 style="color: #f26422; font: bold 35px verdana, arial, sans-serif;"><a href="#">Home</a>\IAssertSpec</h1>
+        <form id="myForm" action="{% url 'ias:output' %}" method="post">{% csrf_token %}
+                <label>
+                    <textarea disabled="disabled" rows="10" style="resize: none" cols="50" id="input"  name="input_field" value="" required>{{ response_data.input_field }}</textarea>
+                </label>
+                <label>
+                      <p id ="output_" style="display: block">Result for given assert:</p>
+                    <p id="hidesection" style="display: none;color: orangered">Please write your expected Output</p>
+                    <textarea disabled style="resize: none" rows="10" cols="50" id="output_area" name="output_field">{{ response_data.output_field }}</textarea>
+                </label>
+            <label><div id ="btn_grp" style="display: block" >
+                        <div align="left:30px"  style="display: block" id="sugesttions"><p>Is generated assertion as expected?</p></div>
+
+                            <div><input type ="button" style="display: block;font: bold 15px Arial" id="yes" onclick="enable_label({id : id})" value="Yes/Regenerate"><br>
+                                <input type ="button" style="display: block;font: bold 15px Arial" id="myBtn" onclick="enable_label({id : id})" value="No"><br><br>
+                            </div>
+                </div>
+            </label>
+            <label>
+                                <input type ="submit" style="display: none;font: bold 15px Arial"  id="generate_btn" value="Generate"><br>
+                                <input type ="button" style="display: none;font: bold 15px Arial" id="reset" onclick="document.getElementById('input').value = 'assert property (@(negedge clock) A |-> (B & C));', document.getElementById('output_area').value  =''" value="Reset"><br><br>
+
+            </label>
+
+                <!-- <input type="button" style="display: none" id="myBtn" value="Submit"><br>  -->
+                        <!-- The Modal -->
+            <div id="myModal" class="modal">
+                 <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <div>
+                        <label>
+                                <p style="color: orangered">Please write your expected result:-</p>
+                                <textarea rows="6" cols="60" style="resize: none" id="sug_output" name="sugest_out_field">{{ response_data.output_field }}</textarea><br>
+                               <label><input type="submit" style="font: bold 15px Arial" id="submit" value="Submit"></label>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+        <script type="text/javascript">
+                    function enable_label(parameters) {
+                        let id = parameters.id;
+                        if (id === "no") {
+                            document.getElementById('btn_grp').style.display ='none';
+                            document.getElementById('submit_btn').style.display = 'block';
+                            document.getElementById('output_area').removeAttribute('disabled');
+                            document.getElementById('output_').style.display ='none';
+                            document.getElementById('hidesection').style.display = 'block';
+                        }
+                        else if(id === 'yes'){
+                            document.getElementById('sugesttions').style.display = 'none';
+                            document.getElementById('yes').style.display = 'none';
+                            document.getElementById('myBtn').style.display = 'none';
+                            document.getElementById('generate_btn').style.display = 'block';
+                            document.getElementById('reset').style.display = 'block';
+                            document.getElementById('input').removeAttribute('disabled');
+                            document.getElementById('output_area').value = '';
+                        }
+                    }
+                      // Get the modal
+                    var modal = document.getElementById('myModal');
+
+                    // Get the button that opens the modal
+                    var btn = document.getElementById("myBtn");
+
+                    // Get the <span> element that closes the modal
+                    var span = document.getElementsByClassName("close")[0];
+
+                    // When the user clicks the button, open the modal
+                    btn.onclick = function() {
+                      modal.style.display = "block";
+                    }
+
+                    // When the user clicks on <span> (x), close the modal
+                    span.onclick = function() {
+                      modal.style.display = "none";
+                    }
+
+                    // When the user clicks anywhere outside of the modal, close it
+                    window.onclick = function(event) {
+                      if (event.target === modal) {
+                        modal.style.display = "none";
+                      }
+                    }
+
+                </script>
+        </form>
+{% endblock %}s

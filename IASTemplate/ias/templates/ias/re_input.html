@@ -1,0 +1,17 @@
+{% extends 'ias/index.html' %}
+
+{% block content %}
+
+<h1>IAssertSpec.</h1>
+        <form action="{% url 'ias:output' %}" method="get">{% csrf_token %}
+                <label>
+                    <textarea rows="10" cols="60"  name="input_field" required>{{ post }}</textarea>
+                </label>
+                <label><button type="submit" value="Submit">Generate Output</button><br><br><br><br><br>
+                  <br><br><button type="reset" value="reset">   Reset   </button>
+                </label>
+                <label>
+                    <textarea disabled rows="10" cols="60" name="output_field"></textarea>
+                </label>
+        </form>
+{% endblock %}s

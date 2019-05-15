@@ -1,0 +1,122 @@
+{% extends 'ias/index.html' %}
+
+{% block content %}
+
+<h1 style="color: #f26422; font: bold 35px verdana, arial, sans-serif;">IAssertSpec</h1>
+        <form id="myForm" action="{% url 'ias:output' %}" method="post"  onsubmit="return checkform(this);">{% csrf_token %}
+            <div id="hidesection" style="display: none"><p class="paragraph" style="color: #ff4500">Please write some input and then generate output first</p></div>
+                <label>
+                     <p style="color: #ff4500; display: none">Syntax for input:- assert property ( Your Assertion );</p>
+                    <textarea rows="12" style="resize: none" cols="50" id="input"  name="input_field" value="" required>assert property (@(negedge clock) A |-> (B & C));</textarea><br><br><br><br><br><br><br>
+                </label>
+                <label>
+                    <textarea disabled style="resize: none" rows="12" cols="50" id="output_area" name="output_field"></textarea><br><br><br><br><br><br><br>
+                </label>
+
+            <label><!-- START CAPTCHA -->
+                <div class="capbox-outer" align="center" style="color: #f26422; font: bold 20px verdana, arial, sans-serif;">Captcha</div>
+               <div id="capcha" align="center"><div class="capbox" align="center" >
+                        <div id="CaptchaDiv" align="center"></div>
+                        <div class="capbox-inner" align="center">
+                        What is the value of Above:<br>
+                        &nbsp&nbsp<input type="hidden" id="txtCaptcha" align="center">
+                            <input type="text" name="CaptchaInput" id="CaptchaInput" align="center"></div></div></div><br><!-- END CAPTCHA -->
+                <input type="button" size="15px" style="font: bold 10px Arial" id ="myBtn" value="Generate Output">
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="button" style="size: A4;font: bold 10px Arial" align="center" onclick="document.getElementById('input').value = 'assert property ( Type your Assertion here );', document.getElementById('output_area').value  =''" value="Reset"><br><br><br><br><br><br><br>
+            </label>
+
+                  <!-- The Modal -->
+            <div id="myModal" class="modal">
+                 <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <div>
+                        <label>
+                                <p style="color: orangered">Please enter your Email-ID, We will send you an updates.</p>
+                                <textarea rows="1" cols="1" style="resize: none" id="sug_output" name="email_id" required></textarea>
+                               <label><input type="submit" id="submit" value="Submit" ></label>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+                <script type="text/javascript">
+
+                      function checkform(myForm){
+                        var why = "";
+                        if(myForm.CaptchaInput.value === ""){
+                        why += "- Please Enter CAPTCHA Code.\n";
+                        }
+                        if(myForm.CaptchaInput.value !== ""){
+                        if(ValidCaptcha(myForm.CaptchaInput.value) === false){
+                        why += "- The CAPTCHA Code Does Not Match.\n";
+                        }
+                        }
+                        if(why !== ""){
+                        alert(why);
+                        return false;
+                        }
+                        }
+                        var a = Math.ceil(Math.random() * 9)+ ''+'     ';
+                        var op ='    '+'+'+'     ';
+                        var b = Math.ceil(Math.random() * 9)+ '';
+                        var code = parseInt(a) + op + parseInt(b) ;
+                        var var1 = parseInt(a) + parseInt(b);
+                        document.getElementById("txtCaptcha").value = var1;
+                        document.getElementById("CaptchaDiv").innerHTML = code;
+
+                        // Validate input against the generated number
+                    /**
+                     * @return {boolean}
+                     */
+                    function ValidCaptcha(value){
+                        var str1 = removeSpaces(document.getElementById('txtCaptcha').value);
+                        var str2 = removeSpaces(document.getElementById('CaptchaInput').value);
+                        return str1 === str2;
+                        }
+
+                        // Remove the spaces from the entered and generated code
+                        function removeSpaces(string){
+                        return string.split(' ').join('');
+                        }
+
+                      function Close(parameters) {
+                        var model = document.getElementById("close");
+                        let id = parameters.id;
+                        if(id === 'submit_btn')  {
+                            model.style.display = 'block';
+                            document.getElementById('input').value = document.getElementById('output_area').value  ='';
+                            document.getElementById('submit_btn').style.display ='none';
+                            document.getElementById('sug_output').style.display ='none';
+                        }
+                      }
+                        // Get the modal
+                    var modal = document.getElementById('myModal');
+
+                    // Get the button that opens the modal
+                    var btn = document.getElementById("myBtn");
+
+                    // Get the <span> element that closes the modal
+                    var span = document.getElementsByClassName("close")[0];
+
+                    // When the user clicks the button, open the modal
+                    btn.onclick = function() {
+                      modal.style.display = "block";
+                    }
+
+                    // When the user clicks on <span> (x), close the modal
+                    span.onclick = function() {
+                      modal.style.display = "none";
+                    }
+
+                    // When the user clicks anywhere outside of the modal, close it
+                    window.onclick = function(event) {
+                      if (event.target == modal) {
+                        modal.style.display = "none";
+                      }
+                    }
+
+                </script>
+            </label>
+        </form>
+{% endblock %}s
